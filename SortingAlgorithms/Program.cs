@@ -14,7 +14,7 @@ namespace SortingAlgorithms
             List<int> lengthList = new List<int> { 1000, 2000, 3000, 4000};
 
             double timeWork;
-            double[] sortTime = { 0, 0, 0, 0, 0, 0, 0 };
+            double[] sortTime = { 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
             foreach (var currentLength in lengthList)
             {
@@ -60,12 +60,22 @@ namespace SortingAlgorithms
                 Console.WriteLine($"7. Время работы алгоритма Сортировка Шелла: {timeWork}");
                 sortTime[6] += timeWork;
 
+                Array.Copy(array, newArray, array.Length);
+                StartTest(Sorting.QuickSort, newArray, 0, newArray.Length - 1, out timeWork);
+                Console.WriteLine($"8. Время работы алгоритма Быстрая Cортировка: {timeWork}");
+                sortTime[7] += timeWork;
+
+                Array.Copy(array, newArray, array.Length);
+                StartTest(Sorting.MergeSort, newArray, out timeWork);
+                Console.WriteLine($"9. Время работы алгоритма Сортировка Слиянием: {timeWork}");
+                sortTime[8] += timeWork;
+
                 Console.WriteLine("\n\n");
             }
             Console.WriteLine("Общее время работы каждого алгоритма по всем длиннам массива");
             for (int i = 0; i < sortTime.Length; i++)
             {
-                Console.WriteLine($"{i+1}: {sortTime[i]/sortTime.Length}");
+                Console.WriteLine($"{i+1}: {Math.Round(sortTime[i] / sortTime.Length, 4)}");
             }
 
             Console.Write("y/n to continue/close console... ");
@@ -88,6 +98,26 @@ namespace SortingAlgorithms
                 _sw.Start();
 
                 action(array);
+
+                _sw.Stop();
+
+                timeWork += _sw.ElapsedMilliseconds;
+            }
+
+            timeWork = timeWork / 10;
+        }
+
+        private static void StartTest(Action<int[], int, int> action, int[] array, int left, int right, out double timeWork)
+        {
+            timeWork = 0;
+
+            for (int i = 1; i <= 10; i++)
+            {
+                _sw.Reset();
+
+                _sw.Start();
+
+                action(array, left, right);
 
                 _sw.Stop();
 
