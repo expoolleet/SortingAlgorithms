@@ -105,9 +105,7 @@ namespace SortingAlgorithms.Algorithms
                         min_index = j;
                     }
                 }
-                var temp = array[min_index];
-                array[min_index] = array[i];
-                array[i] = temp;
+                Swap(array, i, min_index);
             }
         }
 
